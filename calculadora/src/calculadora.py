@@ -11,29 +11,57 @@ def multiplicar(a, b):
 
 
 def dividir(a, b):
+    if b == 0:
+        raise ValueError("No se puede dividir entre cero")
     return a / b
 
 
-def main():
-    print("=== CALCULADORA ===")
+def leer_numero(mensaje):
+    """Pide un número y repite hasta que sea válido."""
+    while True:
+        try:
+            return float(input(mensaje))
+        except ValueError:
+            print("Error: ingresa un número válido.")
+
+
+def mostrar_menu():
+    print("\n=== CALCULADORA ===")
     print("1. Sumar")
     print("2. Restar")
     print("3. Multiplicar")
     print("4. Dividir")
-    opcion = input("Elige una opción: ")
-    a = float(input("Primer número: "))
-    b = float(input("Segundo número: "))
+    print("5. Salir")
 
-    if opcion == "1":
-        print("Resultado:", sumar(a, b))
-    elif opcion == "2":
-        print("Resultado:", restar(a, b))
-    elif opcion == "3":
-        print("Resultado:", multiplicar(a, b))
-    elif opcion == "4":
-        print("Resultado:", dividir(a, b))
-    else:
-        print("Opción inválida")
+
+OPERACIONES = {
+    "1": sumar,
+    "2": restar,
+    "3": multiplicar,
+    "4": dividir,
+}
+
+
+def main():
+    while True:
+        mostrar_menu()
+        opcion = input("Elige una opción: ")
+
+        if opcion == "5":
+            print("Hasta luego.")
+            break
+
+        if opcion not in OPERACIONES:
+            print("Opción inválida. Intenta de nuevo.")
+            continue
+
+        a = leer_numero("Primer número: ")
+        b = leer_numero("Segundo número: ")
+
+        try:
+            print("Resultado:", OPERACIONES[opcion](a, b))
+        except ValueError as error:
+            print("Error:", error)
 
 
 if __name__ == "__main__":
